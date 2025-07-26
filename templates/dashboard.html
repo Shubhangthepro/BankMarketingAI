@@ -1,0 +1,247 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Bank Marketing Campaign Predictor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Header -->
+    <div class="main-container" data-aos="fade-up">
+        <div class="row align-items-center">
+            <div class="col-lg-8">
+                <h1 class="display-5 fw-bold mb-3">
+                    <i class="fas fa-tachometer-alt me-3"></i>
+                    Analytics Dashboard
+                </h1>
+                <p class="lead text-muted">
+                    Monitor your marketing campaign predictions and customer insights in real-time
+                </p>
+            </div>
+            <div class="col-lg-4 text-end">
+                <a href="{{ url_for('generate_data') }}" class="btn btn-success">
+                    <i class="fas fa-database me-2"></i>
+                    Generate Data
+                </a>
+                <a href="{{ url_for('download_results') }}" class="btn btn-primary">
+                    <i class="fas fa-download me-2"></i>
+                    Download Results
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="main-container" data-aos="fade-up">
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stats-card">
+                    <div class="stats-number">{{ total_customers | default(0) }}</div>
+                    <div class="stats-label">Total Customers</div>
+                    <i class="fas fa-users mt-3" style="font-size: 2rem; color: var(--secondary-color);"></i>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stats-card">
+                    <div class="stats-number">{{ total_predictions | default(0) }}</div>
+                    <div class="stats-label">Total Predictions</div>
+                    <i class="fas fa-chart-line mt-3" style="font-size: 2rem; color: var(--success-color);"></i>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stats-card">
+                    <div class="stats-number">{{ positive_predictions | default(0) }}</div>
+                    <div class="stats-label">Positive Responses</div>
+                    <i class="fas fa-thumbs-up mt-3" style="font-size: 2rem; color: var(--success-color);"></i>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                <div class="stats-card">
+                    <div class="stats-number">{{ negative_predictions | default(0) }}</div>
+                    <div class="stats-label">Negative Responses</div>
+                    <i class="fas fa-thumbs-down mt-3" style="font-size: 2rem; color: var(--accent-color);"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="main-container" data-aos="fade-up">
+        <div class="row g-4">
+            <!-- Age Distribution Chart -->
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="chart-container">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        Age Distribution
+                    </h5>
+                    <div id="age-chart"></div>
+                </div>
+            </div>
+            
+            <!-- Job Response Chart -->
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="chart-container">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-briefcase me-2"></i>
+                        Response Rate by Job Category
+                    </h5>
+                    <div id="job-chart"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row g-4">
+            <!-- Balance Distribution Chart -->
+            <div class="col-lg-12" data-aos="fade-up">
+                <div class="chart-container">
+                    <h5 class="fw-bold mb-3">
+                        <i class="fas fa-wallet me-2"></i>
+                        Balance Distribution by Response
+                    </h5>
+                    <div id="balance-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="main-container" data-aos="fade-up">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-history me-2"></i>
+                            Recent Uploads
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if recent_uploads %}
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Filename</th>
+                                            <th>Records</th>
+                                            <th>Predictions</th>
+                                            <th>Upload Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for upload in recent_uploads %}
+                                        <tr>
+                                            <td>
+                                                <i class="fas fa-file-csv me-2"></i>
+                                                {{ upload.filename }}
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-primary">{{ upload.records_count }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="badge bg-success">{{ upload.predictions_count }}</span>
+                                            </td>
+                                            <td>
+                                                <small class="text-muted">
+                                                    {{ upload.upload_date.strftime('%Y-%m-%d %H:%M') }}
+                                                </small>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <i class="fas fa-inbox" style="font-size: 3rem; color: #dee2e6;"></i>
+                                <p class="text-muted mt-3">No uploads yet. Start by uploading your customer data!</p>
+                                <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                                    <i class="fas fa-upload me-2"></i>
+                                    Upload Data
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-3">
+                            <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                                <i class="fas fa-upload me-2"></i>
+                                Upload Customer Data
+                            </a>
+                            <a href="{{ url_for('generate_data') }}" class="btn btn-success">
+                                <i class="fas fa-database me-2"></i>
+                                Generate Sample Data
+                            </a>
+                            <a href="{{ url_for('download_results') }}" class="btn btn-warning">
+                                <i class="fas fa-download me-2"></i>
+                                Download Results
+                            </a>
+                        </div>
+                        
+                        <hr>
+                        
+                        <h6 class="fw-bold mb-3">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Tips
+                        </h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Upload CSV files with required columns
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Monitor prediction accuracy trends
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check-circle text-success me-2"></i>
+                                Use insights to optimize campaigns
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Load charts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Age Distribution Chart
+    {% if charts and charts.age_distribution %}
+    var ageData = {{ charts.age_distribution | safe }};
+    Plotly.newPlot('age-chart', ageData.data, ageData.layout, {responsive: true});
+    {% endif %}
+    
+    // Job Response Chart
+    {% if charts and charts.job_response %}
+    var jobData = {{ charts.job_response | safe }};
+    Plotly.newPlot('job-chart', jobData.data, jobData.layout, {responsive: true});
+    {% endif %}
+    
+    // Balance Distribution Chart
+    {% if charts and charts.balance_response %}
+    var balanceData = {{ charts.balance_response | safe }};
+    Plotly.newPlot('balance-chart', balanceData.data, balanceData.layout, {responsive: true});
+    {% endif %}
+});
+
+// Auto-refresh dashboard every 30 seconds
+setInterval(function() {
+    location.reload();
+}, 30000);
+</script>
+{% endblock %} 

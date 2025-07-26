@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Data - Bank Marketing Campaign Predictor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="main-container" data-aos="fade-up">
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold mb-3">
+                <i class="fas fa-upload me-3"></i>
+                Upload Customer Data
+            </h1>
+            <p class="lead text-muted">
+                Upload your customer CSV file to get AI-powered predictions for your marketing campaign
+            </p>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-file-csv me-2"></i>
+                            File Upload
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" enctype="multipart/form-data" id="uploadForm">
+                            <div class="upload-area" id="uploadArea">
+                                <div class="mb-4">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 4rem; color: var(--secondary-color);"></i>
+                                </div>
+                                <h5 class="fw-bold mb-3">Drag & Drop your CSV file here</h5>
+                                <p class="text-muted mb-4">or click to browse files</p>
+                                <input type="file" name="file" id="file" accept=".csv" class="form-control" style="display: none;" required>
+                                <button type="button" class="btn btn-primary" onclick="document.getElementById('file').click()">
+                                    <i class="fas fa-folder-open me-2"></i>
+                                    Choose File
+                                </button>
+                                <div id="fileInfo" class="mt-3" style="display: none;">
+                                    <div class="alert alert-info">
+                                        <i class="fas fa-file-csv me-2"></i>
+                                        <span id="fileName"></span>
+                                        <button type="button" class="btn-close float-end" onclick="clearFile()"></button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" class="btn btn-success btn-lg w-100" id="submitBtn" disabled>
+                                    <i class="fas fa-rocket me-2"></i>
+                                    <span id="submitText">Upload & Predict</span>
+                                    <div class="loading-spinner ms-2" id="loadingSpinner" style="display: none;"></div>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requirements Section -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            CSV File Requirements
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6 class="fw-bold mb-3">Required Columns:</h6>
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        age (numeric)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        job (text)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        marital (text)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        education (text)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        balance (numeric)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        housing (yes/no)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        loan (yes/no)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        contact (text)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        month (text)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        day_of_week (text)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        duration (numeric)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        campaign (numeric)
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check-circle text-success me-2"></i>
+                                        poutcome (text)
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="fw-bold mb-3">Example Data:</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>age</th>
+                                                <th>job</th>
+                                                <th>marital</th>
+                                                <th>balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>45</td>
+                                                <td>management</td>
+                                                <td>married</td>
+                                                <td>1500</td>
+                                            </tr>
+                                            <tr>
+                                                <td>32</td>
+                                                <td>technician</td>
+                                                <td>single</td>
+                                                <td>2500</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="mt-3">
+                                    <a href="#" class="btn btn-outline-primary btn-sm" onclick="downloadSample()">
+                                        <i class="fas fa-download me-2"></i>
+                                        Download Sample CSV
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-8">
+                <div class="row g-4">
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-shield-alt" style="font-size: 3rem; color: var(--success-color);"></i>
+                            </div>
+                            <h6 class="fw-bold">Secure Upload</h6>
+                            <p class="text-muted small">Your data is processed securely and never stored permanently</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-bolt" style="font-size: 3rem; color: var(--warning-color);"></i>
+                            </div>
+                            <h6 class="fw-bold">Fast Processing</h6>
+                            <p class="text-muted small">Get predictions in seconds with our optimized AI model</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                        <div class="text-center">
+                            <div class="mb-3">
+                                <i class="fas fa-chart-pie" style="font-size: 3rem; color: var(--secondary-color);"></i>
+                            </div>
+                            <h6 class="fw-bold">Detailed Insights</h6>
+                            <p class="text-muted small">Receive confidence scores and detailed analysis for each prediction</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileInput = document.getElementById('file');
+    const fileInfo = document.getElementById('fileInfo');
+    const fileName = document.getElementById('fileName');
+    const submitBtn = document.getElementById('submitBtn');
+    const submitText = document.getElementById('submitText');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const uploadForm = document.getElementById('uploadForm');
+
+    fileInput.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            if (file.name.endsWith('.csv')) {
+                fileName.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+                fileInfo.style.display = 'block';
+                submitBtn.disabled = false;
+            } else {
+                alert('Please select a CSV file');
+                clearFile();
+            }
+        }
+    });
+
+    uploadForm.addEventListener('submit', function(e) {
+        submitBtn.disabled = true;
+        submitText.textContent = 'Processing...';
+        loadingSpinner.style.display = 'inline-block';
+    });
+
+    function clearFile() {
+        fileInput.value = '';
+        fileInfo.style.display = 'none';
+        submitBtn.disabled = true;
+        submitText.textContent = 'Upload & Predict';
+        loadingSpinner.style.display = 'none';
+    }
+
+    window.clearFile = clearFile;
+    window.downloadSample = function() {
+        // Create sample CSV content
+        const sampleData = `age,job,marital,education,balance,housing,loan,contact,month,day_of_week,duration,campaign,poutcome
+45,management,married,tertiary,1500,yes,no,cellular,may,mon,300,1,unknown
+32,technician,single,secondary,2500,yes,no,cellular,jun,tue,180,2,unknown
+28,services,married,secondary,800,yes,yes,cellular,jul,wed,420,1,unknown
+35,management,single,tertiary,5000,yes,no,cellular,aug,thu,240,3,unknown
+42,admin.,married,secondary,1200,yes,no,cellular,sep,fri,360,1,unknown`;
+        
+        const blob = new Blob([sampleData], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'sample_customer_data.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+    };
+});
+</script>
+{% endblock %} 

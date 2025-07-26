@@ -1,0 +1,16 @@
+age,job,marital,education,balance,housing,loan,contact,month,day_of_week,duration,campaign,poutcome
+45,management,married,tertiary,1500,yes,no,cellular,may,mon,300,1,unknown
+32,technician,single,secondary,2500,yes,no,cellular,jun,tue,180,2,unknown
+28,services,married,secondary,800,yes,yes,cellular,jul,wed,420,1,unknown
+35,management,single,tertiary,5000,yes,no,cellular,aug,thu,240,3,unknown
+42,admin.,married,secondary,1200,yes,no,cellular,sep,fri,360,1,unknown
+29,student,single,secondary,300,no,no,cellular,oct,mon,120,1,unknown
+38,blue-collar,married,primary,800,yes,no,cellular,nov,tue,280,2,unknown
+51,retired,married,tertiary,3000,yes,no,cellular,dec,wed,600,1,unknown
+25,student,single,secondary,100,no,no,cellular,jan,thu,90,1,unknown
+48,management,married,tertiary,4000,yes,no,cellular,feb,fri,320,1,unknown
+33,technician,single,tertiary,1800,yes,no,cellular,mar,mon,200,2,unknown
+55,retired,married,secondary,2500,yes,no,cellular,apr,tue,450,1,unknown
+27,services,single,secondary,600,no,no,cellular,may,wed,150,1,unknown
+41,admin.,married,secondary,2200,yes,no,cellular,jun,thu,380,2,unknown
+36,management,single,tertiary,3500,yes,no,cellular,jul,fri,290,1,unknown 

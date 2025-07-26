@@ -1,0 +1,286 @@
+{% extends "base.html" %}
+
+{% block title %}Prediction Results - Bank Marketing Campaign Predictor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="main-container" data-aos="fade-up">
+        <!-- Header -->
+        <div class="text-center mb-5">
+            <h1 class="display-5 fw-bold mb-3">
+                <i class="fas fa-chart-pie me-3"></i>
+                Prediction Results
+            </h1>
+            <p class="lead text-muted">
+                AI-powered predictions for your marketing campaign
+            </p>
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>File:</strong> {{ session_data.filename }} | 
+                <strong>Records:</strong> {{ session_data.total_records }} | 
+                <strong>Predictions:</strong> {{ session_data.predictions|length }}
+            </div>
+        </div>
+
+        <!-- Summary Statistics -->
+        <div class="row g-4 mb-5">
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                <div class="stats-card">
+                    <div class="stats-number">{{ session_data.predictions|length }}</div>
+                    <div class="stats-label">Total Predictions</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                <div class="stats-card">
+                    <div class="stats-number">{{ session_data.predictions|selectattr('prediction', 'equalto', 'yes')|list|length }}</div>
+                    <div class="stats-label">Positive Responses</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+                <div class="stats-card">
+                    <div class="stats-number">{{ session_data.predictions|selectattr('prediction', 'equalto', 'no')|list|length }}</div>
+                    <div class="stats-label">Negative Responses</div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+                <div class="stats-card">
+                    <div class="stats-number">
+                        {{ "%.1f"|format((session_data.predictions|selectattr('prediction', 'equalto', 'yes')|list|length / session_data.predictions|length * 100)|float) }}%
+                    </div>
+                    <div class="stats-label">Success Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="card mb-4" data-aos="fade-up">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h6 class="fw-bold mb-3">
+                            <i class="fas fa-filter me-2"></i>
+                            Filter Results
+                        </h6>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-outline-primary btn-sm" onclick="filterResults('all')">
+                                All Results
+                            </button>
+                            <button class="btn btn-outline-success btn-sm" onclick="filterResults('yes')">
+                                Positive Only
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="filterResults('no')">
+                                Negative Only
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <div class="d-flex gap-2 justify-content-end">
+                            <button class="btn btn-success" onclick="exportResults()">
+                                <i class="fas fa-download me-2"></i>
+                                Export CSV
+                            </button>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-primary">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                View Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="card" data-aos="fade-up">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-table me-2"></i>
+                    Detailed Predictions
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Age</th>
+                                <th>Job</th>
+                                <th>Marital</th>
+                                <th>Balance</th>
+                                <th>Housing</th>
+                                <th>Loan</th>
+                                <th>Duration</th>
+                                <th>Campaign</th>
+                                <th>Prediction</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for prediction in session_data.predictions %}
+                            <tr class="prediction-row" data-prediction="{{ prediction.prediction }}">
+                                <td>{{ loop.index }}</td>
+                                <td>{{ prediction.customer_data.age }}</td>
+                                <td>{{ prediction.customer_data.job }}</td>
+                                <td>{{ prediction.customer_data.marital }}</td>
+                                <td>${{ "{:,.2f}".format(prediction.customer_data.balance) }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'success' if prediction.customer_data.housing == 'yes' else 'secondary' }}">
+                                        {{ prediction.customer_data.housing }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-{{ 'warning' if prediction.customer_data.loan == 'yes' else 'secondary' }}">
+                                        {{ prediction.customer_data.loan }}
+                                    </span>
+                                </td>
+                                <td>{{ prediction.customer_data.duration }}s</td>
+                                <td>{{ prediction.customer_data.campaign }}</td>
+                                <td>
+                                    <span class="prediction-{{ prediction.prediction }}">
+                                        {{ prediction.prediction.upper() }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="confidence-{{ 'high' if prediction.confidence > 0.8 else 'medium' if prediction.confidence > 0.6 else 'low' }}">
+                                        {{ "%.1f"|format(prediction.confidence * 100) }}%
+                                    </span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Insights Section -->
+        <div class="row g-4 mt-4">
+            <div class="col-lg-6" data-aos="fade-right">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Key Insights
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-chart-line text-success me-2"></i>
+                                <strong>Success Rate:</strong> 
+                                {{ "%.1f"|format((session_data.predictions|selectattr('prediction', 'equalto', 'yes')|list|length / session_data.predictions|length * 100)|float) }}% 
+                                of customers are predicted to respond positively
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-users text-primary me-2"></i>
+                                <strong>Target Audience:</strong> 
+                                Focus on customers with higher confidence scores for better campaign ROI
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-bullseye text-warning me-2"></i>
+                                <strong>Recommendation:</strong> 
+                                Prioritize customers predicted as "YES" with confidence > 70%
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-cogs me-2"></i>
+                            Next Steps
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-3">
+                            <a href="{{ url_for('upload') }}" class="btn btn-primary">
+                                <i class="fas fa-upload me-2"></i>
+                                Upload More Data
+                            </a>
+                            <a href="{{ url_for('dashboard') }}" class="btn btn-success">
+                                <i class="fas fa-chart-bar me-2"></i>
+                                View Analytics
+                            </a>
+                            <a href="{{ url_for('download_results') }}" class="btn btn-warning">
+                                <i class="fas fa-download me-2"></i>
+                                Download All Results
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function filterResults(filter) {
+    const rows = document.querySelectorAll('.prediction-row');
+    
+    rows.forEach(row => {
+        const prediction = row.getAttribute('data-prediction');
+        
+        if (filter === 'all' || prediction === filter) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+    
+    // Update active filter button
+    document.querySelectorAll('.btn-outline-primary, .btn-outline-success, .btn-outline-danger').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
+function exportResults() {
+    // Get visible rows
+    const visibleRows = Array.from(document.querySelectorAll('.prediction-row')).filter(row => 
+        row.style.display !== 'none'
+    );
+    
+    // Create CSV content
+    let csvContent = 'Age,Job,Marital,Balance,Housing,Loan,Duration,Campaign,Prediction,Confidence\n';
+    
+    visibleRows.forEach(row => {
+        const cells = row.querySelectorAll('td');
+        const age = cells[1].textContent;
+        const job = cells[2].textContent;
+        const marital = cells[3].textContent;
+        const balance = cells[4].textContent.replace('$', '').replace(',', '');
+        const housing = cells[5].querySelector('.badge').textContent;
+        const loan = cells[6].querySelector('.badge').textContent;
+        const duration = cells[7].textContent.replace('s', '');
+        const campaign = cells[8].textContent;
+        const prediction = cells[9].textContent;
+        const confidence = cells[10].textContent.replace('%', '');
+        
+        csvContent += `${age},${job},${marital},${balance},${housing},${loan},${duration},${campaign},${prediction},${confidence}\n`;
+    });
+    
+    // Download CSV
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prediction_results.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+}
+
+// Initialize with all results shown
+document.addEventListener('DOMContentLoaded', function() {
+    // Add active class to "All Results" button
+    document.querySelector('.btn-outline-primary').classList.add('active');
+});
+</script>
+{% endblock %} 

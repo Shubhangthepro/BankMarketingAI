@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Bank Marketing Campaign Predictor{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="main-container" data-aos="fade-up">
+        <div class="row align-items-center">
+            <div class="col-lg-6" data-aos="fade-right">
+                <h1 class="display-4 fw-bold mb-4">
+                    <span class="text-gradient">AI-Powered</span> Bank Marketing Predictions
+                </h1>
+                <p class="lead mb-4">
+                    Transform your marketing campaigns with machine learning. Predict customer responses 
+                    to banking offers with unprecedented accuracy using our advanced AI model trained on 
+                    10 years of historical data.
+                </p>
+                <div class="d-flex gap-3 mb-4">
+                    <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg pulse">
+                        <i class="fas fa-rocket me-2"></i>
+                        Start Predicting
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-outline-primary btn-lg">
+                        <i class="fas fa-chart-bar me-2"></i>
+                        View Dashboard
+                    </a>
+                </div>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <div class="stats-card">
+                            <div class="stats-number floating">95%</div>
+                            <div class="stats-label">Accuracy</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stats-card">
+                            <div class="stats-number floating">10+</div>
+                            <div class="stats-label">Years Data</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="stats-card">
+                            <div class="stats-number floating">100K+</div>
+                            <div class="stats-label">Records</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <div class="text-center">
+                    <i class="fas fa-brain" style="font-size: 15rem; color: rgba(52, 152, 219, 0.2);" class="floating"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="main-container" data-aos="fade-up">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">Why Choose Our Platform?</h2>
+            <p class="lead text-muted">Advanced features designed for modern banking needs</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-robot" style="font-size: 3rem; color: var(--secondary-color);"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">AI-Powered Predictions</h5>
+                        <p class="card-text">
+                            Our machine learning model analyzes customer behavior patterns to predict 
+                            campaign response likelihood with high accuracy.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-database" style="font-size: 3rem; color: var(--success-color);"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Rich Historical Data</h5>
+                        <p class="card-text">
+                            Trained on 10 years of comprehensive banking data including demographics, 
+                            financial behavior, and campaign history.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+                <div class="card h-100">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-chart-line" style="font-size: 3rem; color: var(--warning-color);"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Real-time Analytics</h5>
+                        <p class="card-text">
+                            Interactive dashboards with real-time visualizations to track campaign 
+                            performance and customer insights.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works Section -->
+    <div class="main-container" data-aos="fade-up">
+        <div class="text-center mb-5">
+            <h2 class="display-5 fw-bold mb-3">How It Works</h2>
+            <p class="lead text-muted">Simple steps to get started with predictive marketing</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="text-center">
+                    <div class="position-relative mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
+                            1
+                        </div>
+                    </div>
+                    <h5 class="fw-bold">Upload Data</h5>
+                    <p class="text-muted">Upload your customer CSV file with required fields</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="text-center">
+                    <div class="position-relative mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
+                            2
+                        </div>
+                    </div>
+                    <h5 class="fw-bold">AI Analysis</h5>
+                    <p class="text-muted">Our model processes and analyzes customer data</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="text-center">
+                    <div class="position-relative mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
+                            3
+                        </div>
+                    </div>
+                    <h5 class="fw-bold">Get Predictions</h5>
+                    <p class="text-muted">Receive detailed predictions with confidence scores</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                <div class="text-center">
+                    <div class="position-relative mb-3">
+                        <div class="bg-primary text-white rounded-circle d-inline-flex align-items-center justify-content-center" 
+                             style="width: 80px; height: 80px; font-size: 2rem; font-weight: bold;">
+                            4
+                        </div>
+                    </div>
+                    <h5 class="fw-bold">Optimize Campaigns</h5>
+                    <p class="text-muted">Use insights to target the most promising customers</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="main-container text-center" data-aos="fade-up">
+        <h2 class="display-5 fw-bold mb-4">Ready to Transform Your Marketing?</h2>
+        <p class="lead mb-4">
+            Join leading banks that are already using AI to improve their campaign ROI
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-upload me-2"></i>
+                Upload Customer Data
+            </a>
+            <a href="{{ url_for('generate_data') }}" class="btn btn-success btn-lg">
+                <i class="fas fa-database me-2"></i>
+                Generate Sample Data
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.text-gradient {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+</style>
+{% endblock %} 

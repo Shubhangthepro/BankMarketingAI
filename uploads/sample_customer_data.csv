@@ -1,0 +1,6 @@
+age,job,marital,education,balance,housing,loan,contact,month,day_of_week,duration,campaign,poutcome
+45,management,married,tertiary,1500,yes,no,cellular,may,mon,300,1,unknown
+32,technician,single,secondary,2500,yes,no,cellular,jun,tue,180,2,unknown
+28,services,married,secondary,800,yes,yes,cellular,jul,wed,420,1,unknown
+35,management,single,tertiary,5000,yes,no,cellular,aug,thu,240,3,unknown
+42,admin.,married,secondary,1200,yes,no,cellular,sep,fri,360,1,unknown
