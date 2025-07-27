@@ -2,6 +2,11 @@
 
 An AI-powered Flask web application that predicts customer responses to bank marketing campaigns using machine learning. The system is trained on 10 years of realistic banking data and provides accurate predictions with confidence scores.
 
+## Live Demo
+[BankMarketingAI on Render](https://bankmarketingai.onrender.com)
+
+Click the link above to try the live version of the app.
+
 ## 🚀 Features
 
 ### Core Functionality
